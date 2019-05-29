@@ -1,24 +1,15 @@
-import React, { Component } from "react";
-import User from "./user";
+import React, { Component } from 'react';
+import User from './user';
 
 class Post extends Component {
   render() {
+    const { name, altname, photo, src, alt, descr } = this.props.item;
     return (
       <div className="post">
-        <User
-          src="https://wisetoast.com/wp-content/uploads/2015/10/Katherine-Elizabeth-Upton-most-beautiful-woman.jpg"
-          alt="user"
-          name="Beauliful girl"
-          min
-        />
-        <img src={this.props.src} alt={this.props.alt} />
-        <div className="post__name">Some_account</div>
-        <div className="post__descr">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta
-          possimus accusamus beatae excepturi in eius cumque sed aut rem eaque
-          fuga, quasi, cupiditate vel dolor quia, voluptatem natus suscipit
-          illo!
-        </div>
+        <User src={photo} alt={altname} name={name} min />
+        <img src={src} alt={alt} />
+        <div className="post__name">{name}</div>
+        <div className="post__descr">{descr}</div>
       </div>
     );
   }

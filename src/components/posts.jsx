@@ -1,20 +1,48 @@
-import React, { Component } from "react";
-import Post from "./post";
+import React, { Component } from 'react';
+import Post from './post';
+import InstaService from './../services/instaservice';
+import ErrorMessage from './errorMessage';
 
 class Posts extends Component {
+  InstaService = new InstaService();
+  state = {
+    posts: [],
+    error: false
+  };
+
+  componentDidMount() {
+    this.updatePosts();
+  }
+
+  updatePosts() {
+    this.InstaService.getAllPosts()
+      .then(this.onPostsLoaded)
+      .catch(this.onError);
+  }
+
+  onPostsLoaded = posts => {
+    this.setState({ posts });
+  };
+
+  onError = err => {
+    this.setState({ error: true });
+  };
+
+  renderItems(arr) {
+    return arr.map(item => {
+      return <Post item={item} key={item.id} />;
+    });
+  }
+
   render() {
-    return (
-      <div className="left">
-        <Post
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSvHGqXspXAqksxkhLd6bFWzNUynNJRb6ajaTRST91uRQ8LilgE"
-          alt="nature"
-        />
-        <Post
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSXBxIQAhTzwbHZ5VVkf8wx75u-AzLOUpJidlaAvLb1bNb8Z_yG"
-          alt="nature"
-        />
-      </div>
-    );
+    const { error, posts } = this.state;
+    const items = this.renderItems(posts);
+
+    if (error) {
+      return <ErrorMessage />;
+    }
+
+    return <div className="left">{items}</div>;
   }
 }
 
